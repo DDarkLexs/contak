@@ -9,11 +9,22 @@
     "start": "react-native start",
     "clear": "npx react-native clean",
     "clean": "cd android && gradlew clean",
-    "test": "jest"
+    "test": "jest",
+    "android-ts": "concurrently \"yarn check-types:watch\"  \"react-native run-android\"",
+    "check-types": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
+    "@types/react-redux": "^7.1.25",
+    "knex-react-native-sqlite": "^1.2.1",
     "react": "18.2.0",
-    "react-native": "0.72.3"
+    "react-native": "0.72.3",
+    "react-native-biometrics": "^3.0.1",
+    "react-native-knex": "^0.14.5",
+    "react-native-sqlite-storage": "^6.0.1",
+    "react-redux": "^8.1.2",
+    "redux": "^4.2.1",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
