@@ -196,8 +196,6 @@ export class Schema extends SchemaABC {
   }
   public async createAll() {
     try {
-      // await this.dropTableByName('lembrete');
-
       await this.createUsuario();
       await this.createContagem();
       await this.createNotaDeArtigo();

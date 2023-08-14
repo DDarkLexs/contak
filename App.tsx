@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Schema} from './src/database/model/index.schema';
 
 const App: React.FC = (): React.JSX.Element => {
   useEffect(() => {

@@ -9,8 +9,9 @@ export class UsuarioRepository extends UsuarioRepositoryABC {
   ): Promise<Usuario> {
     return new Promise(async (resolve, reject) => {
       try {
-        const user = await this.knex('usuario')
+        const user = await this.knex
           .select()
+          .from('usuario')
           .where('id_usuario', id_usuario)
           .first();
 
@@ -28,7 +29,7 @@ export class UsuarioRepository extends UsuarioRepositoryABC {
     return new Promise(async (resolve, reject) => {
       try {
         const id_usuario: number = (
-          await this.knex('usuario').insert(usuario)
+          await this.knex.select('usuario').insert(usuario)
         )[0];
 
         const user = await this.getOne(id_usuario);
@@ -42,8 +43,9 @@ export class UsuarioRepository extends UsuarioRepositoryABC {
   protected updateOne(user: Usuario): Promise<Usuario> {
     return new Promise(async (resolve, reject) => {
       try {
-        await this.knex('usuario')
+        await this.knex
           .update(user)
+          .from('usuario')
           .where('id_usuario', user.id_usuario);
         const usuario: Usuario = await this.getOne(user.id_usuario);
         resolve(usuario);

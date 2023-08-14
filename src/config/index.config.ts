@@ -14,13 +14,13 @@ knex.raw('PRAGMA foreign_keys = ON;').then(() => {
 });
 
 export class ContakDB {
-  private _knex: any;
+  private _knex: Config;
 
   constructor() {
     this._knex = knex;
   }
-  set knex(knexConfig) {
-    this._knex = knex;
+  set knex(knexConfig: Config) {
+    this._knex = knexConfig;
   }
 
   public get knex() {
