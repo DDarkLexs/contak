@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import Authentication from './src/screens/Authentication/index.screen';
 
 const App: React.FC = (): React.JSX.Element => {
   useEffect(() => {
@@ -12,7 +13,7 @@ const App: React.FC = (): React.JSX.Element => {
   });
   return (
     <View style={styles.appStyle}>
-      <Text>Ola mundo! 🖖</Text>
+      <Authentication />
     </View>
   );
 };
