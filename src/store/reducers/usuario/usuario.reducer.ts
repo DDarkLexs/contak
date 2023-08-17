@@ -2,15 +2,11 @@ import {createSlice} from '@reduxjs/toolkit';
 import {Usuario} from '../../../database/model/table.model';
 
 interface UsuarioSlice {
-  conta: Usuario;
+  conta: Partial<Omit<Usuario, 'senha'>>;
 }
 
 const initialState: UsuarioSlice = {
-  conta: {
-    nome: 'antonio',
-    senha: '',
-    telefone: '',
-  },
+  conta: {},
 };
 
 const userSlice = createSlice({

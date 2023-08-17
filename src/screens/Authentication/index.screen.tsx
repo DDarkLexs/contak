@@ -1,14 +1,31 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Surface} from 'react-native-paper';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ImageBackground} from 'react-native';
 import Entrada from './Entrada.screen';
 import Registro from './Registro.screen';
+import EntradaScreen from './Entrada.screen';
+import {AuthPath} from './model/props.model';
+import { StackScreenProps } from '@react-navigation/stack'
 
-const AuthScreen: React.FC = (): React.JSX.Element => {
+type RootStackParamList = {
+  Authentication:undefined,
+}
+type AuthScreenProp = StackScreenProps<RootStackParamList,'Authentication'>
+
+const AuthScreen: React.FC<any> = ( prop:AuthScreenProp ): React.JSX.Element => {
+  const [path, setPath] = React.useState('ENTRADA');
+  useEffect(() => {
+
+  }, [path]);
   return (
-    <Surface style={styles.container}>
-      <Registro />
-    </Surface>
+    <ImageBackground
+      source={require('../../assets/images/banner-1.jpg')}
+      style={styles.container}>
+      {path === AuthPath.ENTRADA ? (
+        <EntradaScreen navigation={prop.navigation} path={AuthPath.ENTRADA} setPath={setPath} />
+      ) : (
+        <Registro path={AuthPath.REGISTRO} setPath={setPath} />
+      )}
+    </ImageBackground>
   );
 };
 

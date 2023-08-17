@@ -1,26 +1,26 @@
 export interface Usuario {
-  id_usuario?: number;
+  id_usuario: number;
   nome: string;
   senha: string;
   telefone: string;
-  datacad?: Date; // You might want to use a specific Date type here
+  datacad: Date; // You might want to use a specific Date type here
 }
 
 export interface Nota {
-  id_nota?: number;
+  id_nota: number;
   denominacao: string;
   valor: number;
   id_usuario: number;
 }
 
 export interface NotaDeContagem {
-  id_notaDeContagem?: number;
+  id_notaDeContagem: number;
   vencimento: Date; // You might want to use a specific Date type here
-  datacad?: Date; // You might want to use a specific Date type here
+  datacad: Date; // You might want to use a specific Date type here
 }
 
 export interface Contagem {
-  id_contagem?: number;
+  id_contagem: number;
   quantidade: number;
   id_nota: number;
   id_notaDeContagem: number;

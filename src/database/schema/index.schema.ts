@@ -1,10 +1,10 @@
-import {SchemaABC} from './index.model';
+import {SchemaABC} from '../model/index.model';
 
 export class Schema extends SchemaABC {
   constructor() {
     super();
   }
-  public async createUsuario() {
+  private async createUsuario() {
     return new Promise(async (resolve, reject) => {
       try {
         const tab = 'usuario';
@@ -194,7 +194,7 @@ export class Schema extends SchemaABC {
       }
     });
   }
-  public async createAll() {
+  public async createAll(): Promise<any> {
     try {
       await this.createUsuario();
       await this.createContagem();
@@ -208,7 +208,7 @@ export class Schema extends SchemaABC {
       throw error;
     }
   }
-  public async dropTable(): Promise<any> {
+  public dropTable(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         await this.knex.schema
@@ -219,9 +219,43 @@ export class Schema extends SchemaABC {
           .dropTableIfExists('nota')
           .dropTableIfExists('contagem')
           .dropTableIfExists('notaDeContagem');
+
+        console.log('All tables delete');
+        resolve('ok');
       } catch (error) {
         reject(error);
       }
     });
   }
+  public async WipeAllDataByOneTable(name: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.knex.from(name).del();
+
+        resolve('All data cleared from tables.');
+      } catch (err) {
+        reject(err);
+      } finally {
+        // Close the database connection
+      }
+    });
+  }
+  // async clearAllTables() {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       await this.knex('notaDeArtigo').del();
+  //       await this.knex('validade').del();
+  //       await this.knex('artigo').del();
+  //       await this.knex('seccao').del();
+  //       await this.knex('usuario').del();
+  //       await this.knex('lembrete').del();
+
+  //       resolve('All data cleared from tables.');
+  //     } catch (err) {
+  //       reject('Error clearing data:', err);
+  //     } finally {
+  //       // Close the database connection
+  //     }
+  //   });
+  // }
 }
