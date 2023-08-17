@@ -72,7 +72,6 @@ export class UsuarioRepository extends UsuarioRepositoryABC {
         const usuario: Usuario = await this.getOne(user.id_usuario);
         resolve(usuario);
       } catch (error) {
-        console.log(error);
         reject(error);
       }
     });

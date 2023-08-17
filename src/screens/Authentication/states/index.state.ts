@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {ToastAndroid, Alert} from 'react-native';
 import {UsuarioController} from '../../../controller/usuario/usuario.controller';
 
@@ -37,22 +37,22 @@ export function usuarioAuthHook() {
     }
   }, [nome, telefone, senha, _senha]);
 
-  const entrada = useCallback(async (navigation:any) => {
-    try {
-      setLoading(true);
-      console.log({telefone, senha});
-      
+  const entrada = useCallback(
+    async (navigation: any) => {
+      try {
+        setLoading(true);
+        const user = await controller.authenticate({telefone, senha});
 
-      const user = await controller.authenticate({telefone, senha});
-
-      ToastAndroid.show(`Seja bem-vindo ${user.nome}!`, ToastAndroid.LONG);
-      navigation.navigate('Main')
-    } catch (error) {
-      Alert.alert('Houve um erro!', JSON.stringify(error));
-    } finally {
-      setLoading(false);
-    }
-  }, [telefone, senha]);
+        ToastAndroid.show(`Seja bem-vindo ${user.nome}!`, ToastAndroid.LONG);
+        navigation.navigate('Main');
+      } catch (error) {
+        Alert.alert('Houve um erro!', JSON.stringify(error));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [telefone, senha],
+  );
 
   return {
     nome,

@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-import {Card, TextInput, Button, HelperText} from 'react-native-paper';
-import {useAppSelector} from '../../store/hooks/store.hook';
+import {Card, TextInput, Button} from 'react-native-paper';
 import {usuarioAuthHook} from './states/index.state';
 import {AuthPath, AuthProps} from './model/props.model';
 
@@ -22,7 +21,7 @@ const EntradaScreen: React.FC<AuthProps> = (props): React.JSX.Element => {
         <View style={style.avatarContainer}>
           <Image
             style={style.img}
-            source={require('../../assets/images/auth.png')}
+            source={require('../../assets/logo/contak-outline.png')}
           />
           <Card.Title
             title={'Entrada'}

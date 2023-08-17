@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Surface} from 'react-native-paper';
 import Authentication from './src/screens/Authentication/index.screen';
 import {Main} from './src/screens/Main.screen';
 import {createNativeStackNavigator as createStackNavigator} from '@react-navigation/native-stack';
@@ -21,7 +22,7 @@ const App: React.FC = (): React.JSX.Element => {
     func();
   });
   return (
-    <View style={styles.appStyle}>
+    <Surface style={styles.appStyle}>
       <NavigationContainer independent={true}>
         <Stack.Navigator
           screenOptions={{
@@ -41,7 +42,7 @@ const App: React.FC = (): React.JSX.Element => {
           <Stack.Screen name="Main" component={Main} />
         </Stack.Navigator>
       </NavigationContainer>
-    </View>
+    </Surface>
   );
 };
 

@@ -4,24 +4,26 @@ import Entrada from './Entrada.screen';
 import Registro from './Registro.screen';
 import EntradaScreen from './Entrada.screen';
 import {AuthPath} from './model/props.model';
-import { StackScreenProps } from '@react-navigation/stack'
+import {StackScreenProps} from '@react-navigation/stack';
 
 type RootStackParamList = {
-  Authentication:undefined,
-}
-type AuthScreenProp = StackScreenProps<RootStackParamList,'Authentication'>
+  Authentication: undefined;
+};
+type AuthScreenProp = StackScreenProps<RootStackParamList, 'Authentication'>;
 
-const AuthScreen: React.FC<any> = ( prop:AuthScreenProp ): React.JSX.Element => {
+const AuthScreen: React.FC<any> = (prop: AuthScreenProp): React.JSX.Element => {
   const [path, setPath] = React.useState('ENTRADA');
-  useEffect(() => {
-
-  }, [path]);
+  useEffect(() => {}, [path]);
   return (
     <ImageBackground
       source={require('../../assets/images/banner-1.jpg')}
       style={styles.container}>
       {path === AuthPath.ENTRADA ? (
-        <EntradaScreen navigation={prop.navigation} path={AuthPath.ENTRADA} setPath={setPath} />
+        <EntradaScreen
+          navigation={prop.navigation}
+          path={AuthPath.ENTRADA}
+          setPath={setPath}
+        />
       ) : (
         <Registro path={AuthPath.REGISTRO} setPath={setPath} />
       )}
