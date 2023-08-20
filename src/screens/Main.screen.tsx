@@ -1,12 +1,18 @@
 import React from 'react';
-import {BottomNavigation} from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
 import PainelScreen from '../screens/Painel/Painel.screen';
 import ArtigoScreen from '../screens/Artigo/Artigo.screen';
 import NumeracaoScreen from './Numeracao/Numeracao.screen';
 import RegistroScreen from './Registro/Registro.screen';
 import ContaScreen from './Conta/Conta.screen';
+import { NotaRepository } from '../database/repository/nota.repository';
+import { useEffect } from 'react';
+import { actions } from '../store/reducers/main/main.reducer';
+import { useAppDispatch } from '../store/hooks/store.hook';
 export const Main: React.FC = (): React.JSX.Element => {
+  new NotaRepository();
   const [index, setIndex] = React.useState(0);
+  const dispatch = useAppDispatch();
   const [routes] = React.useState([
     {
       key: 'painel',
@@ -40,6 +46,9 @@ export const Main: React.FC = (): React.JSX.Element => {
     },
   ]);
 
+  useEffect(() => {
+    dispatch(actions.setRoute(index));
+  }, [index]);
   const renderScene = BottomNavigation.SceneMap({
     painel: PainelScreen,
     numeracao: NumeracaoScreen,

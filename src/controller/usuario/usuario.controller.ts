@@ -1,6 +1,7 @@
 import {Usuario} from '../../database/model/table.model';
 import {
   UsuarioControllerABC,
+  UsuarioGranted,
   requiredAuthInfo,
   requiredUserInfo,
 } from '../model/userCtrl.model';
@@ -21,14 +22,14 @@ export class UsuarioController extends UsuarioControllerABC {
       }
     });
   }
-  public authenticate(usuario: requiredAuthInfo): Promise<Usuario> {
+  public authenticate(usuario: requiredAuthInfo): Promise<UsuarioGranted> {
     return new Promise<Usuario>(async (resolve, reject) => {
       try {
         const exists = await this.getOneByProp(usuario);
         if (!exists) {
           throw 'Número de telefone ou senha incorretos. Por favor, verifique suas informações e tente novamente.';
         }
-
+        Object.assign(exists, {senha: ''});
         resolve(exists);
       } catch (error) {
         reject(error);

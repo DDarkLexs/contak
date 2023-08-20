@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {Card, Title, IconButton, Text} from 'react-native-paper';
 
 type CustomCardProps = {
@@ -18,9 +18,9 @@ const CustomCard: React.FC<CustomCardProps> = ({
       <View style={styles.header}>
         <IconButton
           icon={icon}
-          size={24}
+          size={30}
           onPress={() => {
-            // Implement your icon press logic here
+            Alert.alert(label, `${value}`)
           }}
         />
         <Title style={styles.label}>{label}</Title>
@@ -32,9 +32,10 @@ const CustomCard: React.FC<CustomCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    margin: 16,
-    padding: 16,
+    margin: 10,
+    padding: 10,
     elevation: 4,
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -43,10 +44,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
   },
   value: {
-    fontSize: 24,
+    fontSize: 15,
     textAlign: 'center',
   },
 });

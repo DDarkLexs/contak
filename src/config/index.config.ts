@@ -1,6 +1,5 @@
 import {knex as con, RNSqliteDialect, Config} from 'knex-react-native-sqlite';
-
-const knex: Config = con({
+export const knex: Config = con({
   client: RNSqliteDialect,
   connection: {
     name: 'contakDB.db',

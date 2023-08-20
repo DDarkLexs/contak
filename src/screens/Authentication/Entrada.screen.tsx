@@ -14,7 +14,7 @@ const EntradaScreen: React.FC<AuthProps> = (props): React.JSX.Element => {
     see1,
     setSee1,
     entrada,
-  } = usuarioAuthHook();
+  } = usuarioAuthHook(props.navigation);
   return (
     <View style={style.container}>
       <Card disabled={loading} style={style.card}>
@@ -55,7 +55,7 @@ const EntradaScreen: React.FC<AuthProps> = (props): React.JSX.Element => {
         </Card.Content>
         <Card.Actions style={style.cardAction}>
           <Button
-            onPress={() => entrada(props.navigation)}
+            onPress={() => entrada()}
             mode="contained-tonal"
             loading={loading}
             disabled={loading}>

@@ -1,8 +1,12 @@
 import {useCallback, useState} from 'react';
 import {ToastAndroid, Alert} from 'react-native';
 import {UsuarioController} from '../../../controller/usuario/usuario.controller';
+import {getUser, setUser} from '../../../appStorage/index.storage';
+import {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks/store.hook';
+import {setSessao} from '../../../store/reducers/usuario/usuario.reducer';
 
-export function usuarioAuthHook() {
+export function usuarioAuthHook(navigation: any) {
   const [nome, setNome] = useState<string>('');
   const [telefone, setTelefone] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
@@ -12,6 +16,36 @@ export function usuarioAuthHook() {
   const [see2, setSee2] = useState<boolean>(false);
 
   const controller = new UsuarioController();
+
+  const session = useAppSelector(state => state.usuario.sessao);
+  const isLoggedIn = !!useAppSelector(state => state.usuario.sessao);
+  const dispatch = useAppDispatch();
+  const verifySession = async () => {
+    setLoading(true);
+    const user = await getUser();
+    // Alert.alert('ok')
+    if (user) {
+      dispatch(setSessao(user));
+    }
+    setLoading(false);
+  };
+
+  // const LogIn = async user => {
+  //   const user: = await setUser(user);
+  //   // Alert.alert('ok')
+  //   if (user) dispatch(setSessao(user));
+  // };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Main');
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    verifySession();
+  }, []);
+
   const registrar = useCallback(async () => {
     try {
       setLoading(true);
@@ -37,22 +71,22 @@ export function usuarioAuthHook() {
     }
   }, [nome, telefone, senha, _senha]);
 
-  const entrada = useCallback(
-    async (navigation: any) => {
-      try {
-        setLoading(true);
-        const user = await controller.authenticate({telefone, senha});
+  const entrada = useCallback(async () => {
+    try {
+      setLoading(true);
+      const user = await controller.authenticate({telefone, senha});
 
-        ToastAndroid.show(`Seja bem-vindo ${user.nome}!`, ToastAndroid.LONG);
-        navigation.navigate('Main');
-      } catch (error) {
-        Alert.alert('Houve um erro!', JSON.stringify(error));
-      } finally {
-        setLoading(false);
-      }
-    },
-    [telefone, senha],
-  );
+      await setUser(user);
+      verifySession();
+      // console.log(response);
+      navigation.navigate('Main');
+      ToastAndroid.show(`Seja bem-vindo ${user.nome}!`, ToastAndroid.LONG);
+    } catch (error) {
+      Alert.alert('Houve um erro!', JSON.stringify(error));
+    } finally {
+      setLoading(false);
+    }
+  }, [telefone, senha]);
 
   return {
     nome,

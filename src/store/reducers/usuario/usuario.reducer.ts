@@ -1,22 +1,27 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {Usuario} from '../../../database/model/table.model';
+import {RootState} from '../../index.store';
+
+type SessaoType = Partial<Omit<Usuario, 'senha'>> | null;
 
 interface UsuarioSlice {
-  conta: Partial<Omit<Usuario, 'senha'>>;
+  sessao: SessaoType;
 }
 
 const initialState: UsuarioSlice = {
-  conta: {},
+  sessao: null,
 };
 
 const userSlice = createSlice({
   name: 'usuario',
   initialState,
   reducers: {
-    // setAccount: (state, action) => {
-    // },
+    setSessao: (state, action: PayloadAction<SessaoType>) => {
+      state.sessao = action.payload;
+    },
   },
 });
 
 export const {actions} = userSlice;
+export const {setSessao} = userSlice.actions;
 export default userSlice.reducer;

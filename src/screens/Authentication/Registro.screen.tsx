@@ -21,7 +21,7 @@ const RegistroScreen: React.FC<AuthProps> = (props): React.JSX.Element => {
     see2,
     setSee1,
     setSee2,
-  } = usuarioAuthHook();
+  } = usuarioAuthHook(props.navigation);
   return (
     <View style={style.container}>
       <Card disabled={loading} style={style.card}>

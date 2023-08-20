@@ -1,19 +1,22 @@
 import React from 'react';
-import {View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {StyleSheet, ScrollView} from 'react-native';
+import ShortNumeracaoDataTable from '../../components/Registro/numeracao/numeracaoTable.component';
+import ResumoRegistrosTables from '../../components/Registro/provider.component';
 
 const RegistroScreen: React.FC = (): React.JSX.Element => {
   return (
-    <View style={{flex: 1}}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: 24, fontWeight: 'bold'}}>Registros!</Text>
-        <Text style={{fontSize: 18, color: '#888', marginTop: 16}}>
-          Este é um exemplo de componente React Native usando React Native
-          Paper.
-        </Text>
-      </View>
-    </View>
+    <ScrollView style={styles.container}>
+      <ResumoRegistrosTables
+        titulo="Numeração"
+        DataTableComponent={ShortNumeracaoDataTable}
+      />
+    </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 export default RegistroScreen;

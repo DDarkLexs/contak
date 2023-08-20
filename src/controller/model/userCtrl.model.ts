@@ -5,6 +5,8 @@ export type requiredUserInfo = Required<
   Pick<Usuario, 'nome' | 'telefone' | 'senha'>
 >;
 
+export type UsuarioGranted = Omit<Usuario, 'senha'>;
+
 export type requiredAuthInfo = Required<Pick<Usuario, 'telefone' | 'senha'>>;
 
 export abstract class UsuarioControllerABC extends UsuarioRepository {
@@ -12,5 +14,7 @@ export abstract class UsuarioControllerABC extends UsuarioRepository {
     super();
   }
   protected abstract createRecord(usuario: requiredUserInfo): Promise<Usuario>;
-  protected abstract authenticate(usuario: requiredAuthInfo): Promise<Usuario>;
+  protected abstract authenticate(
+    usuario: requiredAuthInfo,
+  ): Promise<UsuarioGranted>;
 }

@@ -1,8 +1,20 @@
 import {SchemaABC} from '../model/index.model';
+import {
+  Artigo,
+  Contagem,
+  Nota,
+  NotaDeArtigo,
+  NotaDeContagem,
+  PrecoVenda,
+  Usuario,
+} from '../model/table.model';
+// import { up } from './migrations/index.migration';
 
 export class Schema extends SchemaABC {
   constructor() {
     super();
+    // this.createAll();
+    // this.WipeAllDataByOneTable('notaDeContagem');
   }
   private async createUsuario() {
     return new Promise(async (resolve, reject) => {
@@ -10,7 +22,7 @@ export class Schema extends SchemaABC {
         const tab = 'usuario';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
+          await this.knex.schema.createTable<Usuario>(tab, (table: any) => {
             table.increments('id_usuario').primary();
             table.string('nome').notNullable();
             table.string('senha').notNullable();
@@ -34,7 +46,7 @@ export class Schema extends SchemaABC {
         const tab = 'nota';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
+          await this.knex.schema.createTable<Nota>(tab, (table: any) => {
             table.increments('id_nota').primary();
             table.string('denominacao').notNullable();
             table.integer('valor').notNullable();
@@ -62,11 +74,15 @@ export class Schema extends SchemaABC {
         const tab = 'notaDeContagem';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
-            table.increments('id_notaDeContagem').primary();
-            table.datetime('vencimento').notNullable();
-            table.datetime('datacad').notNullable();
-          });
+          await this.knex.schema.createTable<NotaDeContagem>(
+            tab,
+            (table: any) => {
+              table.increments('id_notaDeContagem').primary();
+              table.string('titulo').notNullable();
+              table.datetime('vencimento').notNullable();
+              table.datetime('datacad').notNullable();
+            },
+          );
 
           console.log(`Table "${tab}" created successfully.`);
         } else {
@@ -84,7 +100,7 @@ export class Schema extends SchemaABC {
         const tab = 'contagem';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
+          await this.knex.schema.createTable<Contagem>(tab, (table: any) => {
             table.increments('id_contagem').primary();
             table.integer('quantidade').notNullable();
             table.integer('id_nota').unsigned().notNullable();
@@ -117,7 +133,7 @@ export class Schema extends SchemaABC {
         const tab = 'artigo';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
+          await this.knex.schema.createTable<Artigo>(tab, (table: any) => {
             table.increments('id_artigo').primary();
             table.string('nome').notNullable();
           });
@@ -138,22 +154,25 @@ export class Schema extends SchemaABC {
         const tab = 'notaDeArtigo';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
-            table.increments('id_notaDeArtigo').primary();
-            table.integer('id_usuario').unsigned().notNullable();
-            table.integer('id_artigo').unsigned().notNullable();
-            table.date('datacad').notNullable();
-            table
-              .foreign('id_usuario')
-              .references('usuario.id_usuario')
-              .onDelete('CASCADE')
-              .onUpdate('CASCADE');
-            table
-              .foreign('id_artigo')
-              .references('artigo.id_artigo')
-              .onDelete('CASCADE')
-              .onUpdate('CASCADE');
-          });
+          await this.knex.schema.createTable<NotaDeArtigo>(
+            tab,
+            (table: any) => {
+              table.increments('id_notaDeArtigo').primary();
+              table.integer('id_usuario').unsigned().notNullable();
+              table.integer('id_artigo').unsigned().notNullable();
+              table.date('datacad').notNullable();
+              table
+                .foreign('id_usuario')
+                .references('usuario.id_usuario')
+                .onDelete('CASCADE')
+                .onUpdate('CASCADE');
+              table
+                .foreign('id_artigo')
+                .references('artigo.id_artigo')
+                .onDelete('CASCADE')
+                .onUpdate('CASCADE');
+            },
+          );
 
           console.log(`Table "${tab}" created successfully.`);
         } else {
@@ -171,7 +190,7 @@ export class Schema extends SchemaABC {
         const tab = 'precoVenda';
         const schema = await this.tableExists(tab);
         if (!schema) {
-          await this.knex.schema.createTable(tab, (table: any) => {
+          await this.knex.schema.createTable<PrecoVenda>(tab, (table: any) => {
             table.increments('Id_precoVenda').primary();
             table.decimal('precoCompra', 11, 2).notNullable();
             table.decimal('percentagem', 11, 2).notNullable();
@@ -196,6 +215,7 @@ export class Schema extends SchemaABC {
   }
   public async createAll(): Promise<any> {
     try {
+      // await up();
       await this.createUsuario();
       await this.createContagem();
       await this.createNotaDeArtigo();
@@ -240,6 +260,9 @@ export class Schema extends SchemaABC {
       }
     });
   }
+  updateTable(): Promise<any> {
+    return this.knex.schema.alterTable('notaDeContagem');
+  }
   // async clearAllTables() {
   //   return new Promise(async (resolve, reject) => {
   //     try {
@@ -259,3 +282,5 @@ export class Schema extends SchemaABC {
   //   });
   // }
 }
+
+export default new Schema();

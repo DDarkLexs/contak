@@ -2,7 +2,13 @@ import {MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
 
 export const light: object = {
   ...MD3LightTheme,
-  roundness: 10,
+  overrides: {
+    TextInput: {
+      root: {
+        padding: 0,
+      },
+    },
+  },
   colors: {
     primary: 'rgb(0, 95, 175)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -49,6 +55,13 @@ export const light: object = {
 
 export const dark: object = {
   ...MD3DarkTheme,
+  overrides: {
+    TextInput: {
+      root: {
+        padding: 0,
+      },
+    },
+  },
   colors: {
     primary: 'rgb(165, 200, 255)',
     onPrimary: 'rgb(0, 49, 95)',
