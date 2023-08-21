@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet,StatusBar} from 'react-native';
+import {StyleSheet, StatusBar} from 'react-native';
 import {Surface, useTheme} from 'react-native-paper';
 import Authentication from './src/screens/Authentication/index.screen';
 import {Main} from './src/screens/Main.screen';

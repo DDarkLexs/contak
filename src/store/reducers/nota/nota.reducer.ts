@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {Nota} from '../../../database/model/table.model';
-import { QueryContagem } from '../../../database/repository/nota.repository';
+import {QueryContagem} from '../../../database/repository/nota.repository';
 
 interface NotaValue {
   quantidade?: number;
@@ -10,22 +10,27 @@ export type ModifiedNota = Partial<Nota> & Partial<NotaValue>;
 
 interface NotaSlice {
   notas: ModifiedNota[];
-  contagens:QueryContagem[],
+  contagens: QueryContagem[];
   loading: boolean;
   clean: boolean;
+  registro: QueryContagem[];
 }
 
 const initialState: NotaSlice = {
   notas: [],
   loading: false,
   clean: false,
-  contagens:[],
+  contagens: [],
+  registro: [],
 };
 
 const notaSlice = createSlice({
   name: 'notas',
   initialState,
   reducers: {
+    setRegistro: (state, action: PayloadAction<QueryContagem[]>) => {
+      state.registro = action.payload;
+    },
     setClean: (state, action: PayloadAction<boolean>) => {
       state.clean = action.payload;
     },

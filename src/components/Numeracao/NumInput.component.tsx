@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { HelperText, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
-import { actions } from '../../store/reducers/nota/nota.reducer';
-import { convertToCurrency } from '../../utils/moeda/moeda.utils';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/store.hook';
+import React, {useState, useRef} from 'react';
+import {HelperText, TextInput} from 'react-native-paper';
+import {StyleSheet, View} from 'react-native';
+import {actions} from '../../store/reducers/nota/nota.reducer';
+import {convertToCurrency} from '../../utils/moeda/moeda.utils';
+import {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../store/hooks/store.hook';
 
 const NumInputComponent: React.FC<any> = ({
   denominacao,

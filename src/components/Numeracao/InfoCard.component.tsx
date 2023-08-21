@@ -102,7 +102,12 @@ const InfoCard: React.FC = (): React.JSX.Element => {
           showSoftInputOnFocus={false}
           label="Data de vencimento"
           value={formatLong(data)}
-          onPressIn={() => setShowDatePicker(true)}
+          right={
+            <TextInput.Icon
+              onPress={() => setShowDatePicker(true)}
+              icon={'calendar'}
+            />
+          }
         />
         {showDatePicker && (
           <DateTimePicker

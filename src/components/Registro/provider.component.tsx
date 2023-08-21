@@ -1,18 +1,25 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text, Button} from 'react-native-paper';
+import {useAppDispatch} from '../../store/hooks/store.hook';
+import {actions} from '../../store/reducers/registro/registro.reducer';
 
 const ResumoRegistrosTables: React.FC<{
   titulo: string;
   DataTableComponent: any;
 }> = ({titulo, DataTableComponent}): React.JSX.Element => {
+  const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.headLine} variant="headlineMedium">
           {titulo}
         </Text>
-        <Button mode="contained-tonal">mais</Button>
+        <Button
+          onPress={() => dispatch(actions.setPath('numeracao'))}
+          mode="contained-tonal">
+          ver mais
+        </Button>
       </View>
       <View style={styles.container}>
         <DataTableComponent />

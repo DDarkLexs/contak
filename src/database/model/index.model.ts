@@ -1,9 +1,11 @@
 import {ContakDB} from '../../config/index.config';
 import {ReqContagem} from '../../controller/model/notaCtrl.model';
-import { QueryContagem } from '../repository/nota.repository';
-import {Nota, Usuario, Contagem, NotaDeContagem} from './table.model';
+import {NotaForInput, QueryContagem} from '../repository/nota.repository';
+import {Nota, Usuario, NotaDeContagem, Artigo} from './table.model';
 
-export type requiredNotaInfo = Required<Pick<Nota, 'valor' | 'denominacao'>>;
+export type requiredNotaInfo = Required<
+  Pick<Nota, 'valor' | 'denominacao' | 'id_usuario'>
+>;
 export type notaAngolano = Nota['valor'];
 export type ReqNotaDeContagem = Required<
   Omit<NotaDeContagem, 'id_notaDeContagem' | 'datacad'>
@@ -31,7 +33,7 @@ export abstract class NotaRepositoryABC extends ContakDB {
   protected abstract getOne(id_nota: Nota['id_nota']): Promise<Nota>;
   protected abstract getAllByOneUsuario(
     id_usuario: Nota['id_usuario'],
-  ): Promise<Nota[]>;
+  ): Promise<NotaForInput[]>;
   protected abstract getOneByProp(nota: Partial<Nota>): Promise<Nota>;
   protected abstract insertOne(nota: requiredNotaInfo): Promise<Nota>;
   protected abstract insertOneIntoContagemArray(
@@ -43,6 +45,29 @@ export abstract class NotaRepositoryABC extends ContakDB {
   ): Promise<NotaDeContagem>;
 
   protected abstract getAllFromOne(): Promise<QueryContagem[]>;
+  protected abstract deleteOneNotaDeContagem(
+    id_notaDeContagem: NotaDeContagem['id_notaDeContagem'],
+  ): Promise<void>;
   // protected abstract deleteOne(id_nota: Nota['id_nota']): Promise<void>;
+  // protected abstract updateOne(nota: Required<Nota>): Promise<Nota>;
+}
+export abstract class ArtigoRepositoryABC extends ContakDB {
+  protected abstract getOne(id_artigo: Artigo['id_artigo']): Promise<Artigo>;
+  protected abstract insertOne(artigo: Artigo): Promise<Artigo>;
+  protected abstract getAllFromOneUsuario(): Promise<Artigo[]>;
+
+  // protected abstract getAllByOneUsuario(
+  //   id_usuario: Nota['id_usuario'],
+  // ): Promise<NotaForInput[]>;
+  // protected abstract getOneByProp(nota: Partial<Nota>): Promise<Nota>;
+  // protected abstract insertOne(nota: requiredNotaInfo): Promise<Nota>;
+  // protected abstract insertOneIntoContagemArray(
+  //   contagem: ReqContagem[],
+  // ): Promise<void>;
+
+  // protected abstract insertOneIntoNotaDeContagem(
+  //   notaDeContagem: ReqNotaDeContagem,
+  // ): Promise<NotaDeContagem>;
+
   // protected abstract updateOne(nota: Required<Nota>): Promise<Nota>;
 }

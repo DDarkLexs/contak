@@ -5,25 +5,27 @@ import {
   ReqNotaDeContagem,
   requiredNotaInfo,
 } from '../model/index.model';
-import {Contagem, Nota, NotaDeContagem} from '../model/table.model';
+import {Contagem, Nota, NotaDeContagem, Usuario} from '../model/table.model';
 
 type PartialNota = Partial<Nota>;
 export type QueryContagem = Partial<Pick<Nota, 'id_nota'>> &
-  Partial<Pick<NotaDeContagem, 'titulo' | 'vencimento'>> 
-  & { 
-    total:number
-    qtd:number
+  Partial<
+    Pick<NotaDeContagem, 'titulo' | 'vencimento' | 'id_notaDeContagem'>
+  > & {
+    total: number;
+    qtd: number;
   };
+export type NotaForInput = Nota | {quantidade?: number};
 
 export class NotaRepository extends NotaRepositoryABC {
   constructor() {
     super();
-    this.autoInsert();
+    // this.autoInsert();
   }
   protected insertOne(nota: requiredNotaInfo): Promise<Nota> {
     return new Promise(async (resolve, reject) => {
       try {
-        const {id_usuario} = await getUser();
+        const {id_usuario} = (await getUser()) || nota;
         const id_nota: number = (
           await this.knex
             .insert({
@@ -34,6 +36,20 @@ export class NotaRepository extends NotaRepositoryABC {
         )[0];
         const response: Nota = await this.getOne(id_nota);
         resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  protected deleteOneNotaDeContagem(id_notaDeContagem: number): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // console.log('In');
+        await this.knex.raw(
+          `DELETE FROM notaDeContagem WHERE id_notaDeContagem = ${id_notaDeContagem}`,
+        );
+        // console.log('Out');
+        resolve();
       } catch (error) {
         reject(error);
       }
@@ -94,7 +110,8 @@ export class NotaRepository extends NotaRepositoryABC {
             'notaDeContagem.id_notaDeContagem',
           )
           .where('nota.id_usuario', '=', id_usuario) // Substitua idUsuario pelo valor desejado
-          .groupBy('notaDeContagem.id_notaDeContagem');
+          .groupBy('notaDeContagem.id_notaDeContagem')
+          .orderBy('notaDeContagem.id_notaDeContagem', 'desc');
         if (!response) {
           throw 'esta nota não existe';
         }
@@ -140,15 +157,14 @@ export class NotaRepository extends NotaRepositoryABC {
       }
     });
   }
-  protected getAllByOneUsuario(): Promise<Nota[]> {
+  protected getAllByOneUsuario(): Promise<NotaForInput[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const {id_usuario} = await getUser();
-        const query: Nota[] = await this.knex
+        const query: NotaForInput[] = await this.knex
           .select()
           .from('nota')
           .where({id_usuario});
-
         resolve(query);
       } catch (error) {
         reject(error);
@@ -159,7 +175,6 @@ export class NotaRepository extends NotaRepositoryABC {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await this.knex.insert(contagem).into('contagem');
-        console.log(response);
         // const response: Contagem = await this.getOneContagem(id_contagem);
         resolve();
       } catch (error) {
@@ -189,22 +204,27 @@ export class NotaRepository extends NotaRepositoryABC {
       }
     });
   }
-  private async autoInsert(): Promise<void> {
-    try {
-      for (let i = 0; i < this.kwanza.length; i++) {
-        const nota: number = this.kwanza[i];
-        const NotaEmKwanza: requiredNotaInfo = {
-          denominacao: `${nota} kwanza`,
-          valor: nota,
-        };
-        const exists = await this.getOneByProp(NotaEmKwanza);
+  protected async autoInsert(id_usuario: Usuario['id_usuario']): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        for (let i = 0; i < this.kwanza.length; i++) {
+          const nota: number = this.kwanza[i];
+          const NotaEmKwanza: requiredNotaInfo = {
+            denominacao: `${nota} kwanza`,
+            valor: nota,
+            id_usuario,
+          };
+          const exists = await this.getOneByProp(NotaEmKwanza);
 
-        if (!exists) {
-          await this.insertOne(NotaEmKwanza);
+          if (!exists) {
+            await this.insertOne(NotaEmKwanza);
+          }
         }
+        resolve();
+      } catch (error) {
+        console.log(error);
+        reject(error);
       }
-    } catch (error) {
-      throw new Error(`${JSON.stringify(error)}`);
-    }
+    });
   }
 }

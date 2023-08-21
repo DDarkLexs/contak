@@ -4,8 +4,9 @@ import {NotaController} from '../../../controller/nota/nota.controller';
 import {useEffect} from 'react';
 import {ToastAndroid} from 'react-native';
 import {QueryContagem} from '../../../database/repository/nota.repository';
-import {useAppSelector} from '../../../store/hooks/store.hook';
+import {useAppSelector, useAppDispatch} from '../../../store/hooks/store.hook';
 import {convertToCurrency} from '../../../utils/moeda/moeda.utils';
+import {actions} from '../../../store/reducers/nota/nota.reducer';
 
 const ShortNumeracaoDataTable: React.FC = (): React.JSX.Element => {
   const controller = new NotaController();
@@ -15,19 +16,23 @@ const ShortNumeracaoDataTable: React.FC = (): React.JSX.Element => {
     numberOfItemsPerPageList[0],
   );
   const usuario = useAppSelector(state => state.usuario.sessao);
-  const [items, setItems] = React.useState<QueryContagem[]>([]);
-  const route = useAppSelector((state) => state.main.route)
+  const items = useAppSelector(state => state.nota.registro);
+  const route = useAppSelector(state => state.main.route);
+  // const route = useAppSelector(state => state.main.route);
+  const dispatch = useAppDispatch();
 
   const getContas = async () => {
     try {
       const query = await controller.getContagens();
-      setItems(query);
+      dispatch(actions.setRegistro(query));
     } catch (error) {
       ToastAndroid.show(JSON.stringify(error), ToastAndroid.LONG);
     }
   };
   useEffect(() => {
-    getContas();
+    if (usuario?.id_usuario) {
+      getContas();
+    }
   }, [usuario?.id_usuario, route]);
 
   const from = page * itemsPerPage;

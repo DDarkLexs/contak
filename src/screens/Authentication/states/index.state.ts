@@ -5,6 +5,7 @@ import {getUser, setUser} from '../../../appStorage/index.storage';
 import {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks/store.hook';
 import {setSessao} from '../../../store/reducers/usuario/usuario.reducer';
+import {actions as actionsMain} from '../../../store/reducers/main/main.reducer';
 
 export function usuarioAuthHook(navigation: any) {
   const [nome, setNome] = useState<string>('');
@@ -79,6 +80,7 @@ export function usuarioAuthHook(navigation: any) {
       await setUser(user);
       verifySession();
       // console.log(response);
+      dispatch(actionsMain.setLoading(true));
       navigation.navigate('Main');
       ToastAndroid.show(`Seja bem-vindo ${user.nome}!`, ToastAndroid.LONG);
     } catch (error) {

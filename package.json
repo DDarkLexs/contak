@@ -9,6 +9,7 @@
     "start": "react-native start",
     "clear": "npx react-native clean",
     "clean": "cd android && gradlew clean",
+    "build":"cd android && gradlew assembleRelease --stacktrace",
     "test": "jest",
     "android-ts": "concurrently \"yarn check-types:watch\"  \"react-native run-android\"",
     "check-types": "tsc",

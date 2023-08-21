@@ -1,13 +1,13 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
 import ArtigoDataTable from '../../components/Artigo/artigo.dataTable';
-import { Portal, FAB, useTheme } from 'react-native-paper';
+import {Portal, FAB, useTheme} from 'react-native-paper';
 import {useState} from 'react';
 
 const ArtigoScreen: React.FC = (): React.JSX.Element => {
-  const [state, setState] = useState<boolean>( false );
+  const [state, setState] = useState<boolean>(false);
   // const onStateChange = () => setState(!state);
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <ScrollView style={{flex: 1}}>
@@ -37,7 +37,7 @@ const ArtigoScreen: React.FC = (): React.JSX.Element => {
           ]}
           onStateChange={onStateChange}
           onPress={() => {
-          
+
           }}
         />
       </Portal> */}

@@ -1,18 +1,20 @@
 import React from 'react';
-import { BottomNavigation } from 'react-native-paper';
+import {BottomNavigation} from 'react-native-paper';
 import PainelScreen from '../screens/Painel/Painel.screen';
 import ArtigoScreen from '../screens/Artigo/Artigo.screen';
 import NumeracaoScreen from './Numeracao/Numeracao.screen';
 import RegistroScreen from './Registro/Registro.screen';
 import ContaScreen from './Conta/Conta.screen';
-import { NotaRepository } from '../database/repository/nota.repository';
-import { useEffect } from 'react';
-import { actions } from '../store/reducers/main/main.reducer';
-import { useAppDispatch } from '../store/hooks/store.hook';
+import {NotaRepository} from '../database/repository/nota.repository';
+import {useEffect} from 'react';
+import {actions} from '../store/reducers/main/main.reducer';
+import {useAppDispatch, useAppSelector} from '../store/hooks/store.hook';
+import {NotaController} from '../controller/nota/nota.controller';
 export const Main: React.FC = (): React.JSX.Element => {
-  new NotaRepository();
   const [index, setIndex] = React.useState(0);
+  const notaCtrl = new NotaController();
   const dispatch = useAppDispatch();
+  const id_usuario = useAppSelector(state => state.usuario.sessao?.id_usuario);
   const [routes] = React.useState([
     {
       key: 'painel',
@@ -46,6 +48,10 @@ export const Main: React.FC = (): React.JSX.Element => {
     },
   ]);
 
+  useEffect(() => {
+    // notaCtrl.createFirstNota();
+    // dispatch(actions.setRoute(index));
+  }, [id_usuario]);
   useEffect(() => {
     dispatch(actions.setRoute(index));
   }, [index]);

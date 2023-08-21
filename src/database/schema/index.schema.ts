@@ -14,7 +14,8 @@ export class Schema extends SchemaABC {
   constructor() {
     super();
     // this.createAll();
-    // this.WipeAllDataByOneTable('notaDeContagem');
+    // this.WipeAllDataByOneTable('usuario');
+    // console.log('completed')
   }
   private async createUsuario() {
     return new Promise(async (resolve, reject) => {

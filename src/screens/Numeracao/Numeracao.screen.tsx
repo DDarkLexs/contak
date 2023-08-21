@@ -11,6 +11,7 @@ import InfoCard from '../../components/Numeracao/InfoCard.component';
 
 const NumeracaoScreen: React.FC = () => {
   const notaCtrl = new NotaController();
+  const id_usuario = useAppSelector(state => state.usuario.sessao?.id_usuario);
   const notas: ModifiedNota[] = useAppSelector(state => state.nota.notas);
   const route = useAppSelector(state => state.main.route);
   const dispatch = useAppDispatch();
@@ -32,11 +33,13 @@ const NumeracaoScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    setEnviroment();
+    if (id_usuario) {
+      setEnviroment();
+    }
     return () => {
       setIsFetching(false);
     };
-  }, []);
+  }, [id_usuario]);
   return (
     <ScrollView style={styles.container}>
       {notas.map(
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
+    padding: 5,
   },
   row: {
     flexDirection: 'row',

@@ -1,23 +1,40 @@
-import {Nota} from '../../database/model/table.model';
-import { QueryContagem } from '../../database/repository/nota.repository';
+import {NotaDeContagem, Usuario} from '../../database/model/table.model';
+import { useAppDispatch } from '../../store/hooks/store.hook';
+import {
+  NotaForInput,
+  QueryContagem,
+} from '../../database/repository/nota.repository';
 import {
   NotaControllerABC,
   ReqContagem,
   ReqNotaDeContagem,
 } from '../model/notaCtrl.model';
+import { actions } from '../../store/reducers/nota/nota.reducer';
 
 export class NotaController extends NotaControllerABC {
   constructor() {
     super();
   }
-   public async getContagens(): Promise<QueryContagem[]> {
-    return await this.getAllFromOne()
-  }
-  public consultaNotaKwanza(): Promise<Nota[]> {
+  public async getContagens(): Promise<QueryContagem[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const consulta = this.getAllByOneUsuario();
-        resolve(consulta);
+        const response = await this.getAllFromOne();
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  public consultaNotaKwanza(): Promise<NotaForInput[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const consulta = await this.getAllByOneUsuario();
+
+        resolve(
+          consulta.map(nota => {
+            return {...nota, quantidade: 0};
+          }),
+        );
       } catch (error) {
         reject(error);
       }
@@ -41,6 +58,31 @@ export class NotaController extends NotaControllerABC {
         });
         // todo[1].
         await this.insertOneIntoContagemArray(todo);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  public async createFirstNota(
+    id_usuario: Usuario['id_usuario'],
+  ): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.autoInsert(id_usuario);
+        resolve();
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
+  }
+  public deleteNotaDeContagemOnlyOne(
+    id_notaDeContagem: NotaDeContagem['id_notaDeContagem'],
+  ): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.deleteOneNotaDeContagem(id_notaDeContagem);
         resolve();
       } catch (error) {
         reject(error);
