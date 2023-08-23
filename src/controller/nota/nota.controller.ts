@@ -1,5 +1,5 @@
 import {NotaDeContagem, Usuario} from '../../database/model/table.model';
-import { useAppDispatch } from '../../store/hooks/store.hook';
+import {useAppDispatch} from '../../store/hooks/store.hook';
 import {
   NotaForInput,
   QueryContagem,
@@ -9,7 +9,11 @@ import {
   ReqContagem,
   ReqNotaDeContagem,
 } from '../model/notaCtrl.model';
-import { actions } from '../../store/reducers/nota/nota.reducer';
+import {actions} from '../../store/reducers/nota/nota.reducer';
+import {validate} from 'class-validator';
+import {createNotaDeContagem} from '../../guards/Dtos/notaDeContagem.dto';
+import {plainToInstance} from 'class-transformer';
+import {checkErrorContatrainsArrays} from '../../utils/index.utils';
 
 export class NotaController extends NotaControllerABC {
   constructor() {
@@ -46,6 +50,16 @@ export class NotaController extends NotaControllerABC {
   ): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
+        const notadeContagemDto = plainToInstance(
+          createNotaDeContagem,
+          notaDeContagem,
+        );
+        const errors = await validate(notadeContagemDto);
+        if (errors.length > 0) {
+          const msg = checkErrorContatrainsArrays(errors);
+          throw `${msg}`;
+        }
+
         const {id_notaDeContagem} = await this.insertOneIntoNotaDeContagem(
           notaDeContagem,
         );

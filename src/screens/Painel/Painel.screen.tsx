@@ -54,7 +54,7 @@ const PainelScreen: React.FC = (): React.JSX.Element => {
         <View style={styles.row}>
           <CustomCard
             icon={'hand-coin'}
-            label={'N.Total'}
+            label={'Numeração'}
             value={convertToCurrency(contaTotal)}
           />
           <CustomCard

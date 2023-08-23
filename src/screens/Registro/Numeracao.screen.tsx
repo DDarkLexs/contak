@@ -9,6 +9,7 @@ import {actions as notaActions} from '../../store/reducers/nota/nota.reducer';
 import {convertToCurrency} from '../../utils/moeda/moeda.utils';
 import {NotaController} from '../../controller/nota/nota.controller';
 import {MenuItem} from '../../components/Registro/numeracao/MenuItem';
+import ViewNumeracaoDialog from '../../components/Registro/numeracao/ViewInfo';
 
 const NumeracaoData: React.FC = (): React.JSX.Element => {
   const controller = new NotaController();
@@ -26,7 +27,7 @@ const NumeracaoData: React.FC = (): React.JSX.Element => {
   const usuario = useAppSelector(state => state.usuario.sessao);
   const items = useAppSelector(state => state.nota.registro);
   const route = useAppSelector(state => state.main.route);
-
+  const viewNotaDialog = useAppSelector(state => state.nota.viewNotasDialog);
   const from = page * itemsPerPage;
   const to = Math.min((page + 1) * itemsPerPage, items.length);
 
@@ -48,13 +49,14 @@ const NumeracaoData: React.FC = (): React.JSX.Element => {
   React.useEffect(() => {
     setPage(0);
   }, [itemsPerPage]);
-
   return (
     <View style={styles.container}>
       <View style={styles.containerBetween1}>
+        {/* <ViewNumeracao /> */}
+        <ViewNumeracaoDialog visible={viewNotaDialog} />
         <IconButton
           disabled={isLoading}
-          size={30}
+          size={25}
           onPress={() => {
             dispatch(actions.setPath('resumo'));
           }}

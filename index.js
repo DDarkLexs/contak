@@ -1,7 +1,7 @@
 /**
  * @format
  */
-
+import 'reflect-metadata';
 import {AppRegistry, useColorScheme} from 'react-native';
 import App from './App';
 import {PaperProvider} from 'react-native-paper';

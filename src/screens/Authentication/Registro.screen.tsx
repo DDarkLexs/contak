@@ -27,7 +27,7 @@ const RegistroScreen: React.FC<AuthProps> = (props): React.JSX.Element => {
         <View style={style.avatarContainer}>
           <Image
             style={style.img}
-            source={require('../../assets/images/auth.png')}
+            source={require('../../assets/images/contact.png')}
           />
           <Card.Title
             title={'Registro'}

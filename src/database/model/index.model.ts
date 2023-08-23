@@ -1,5 +1,6 @@
 import {ContakDB} from '../../config/index.config';
 import {ReqContagem} from '../../controller/model/notaCtrl.model';
+import {ArtigoDto} from '../../guards/Dtos/artigo.dto';
 import {NotaForInput, QueryContagem} from '../repository/nota.repository';
 import {Nota, Usuario, NotaDeContagem, Artigo} from './table.model';
 
@@ -51,23 +52,21 @@ export abstract class NotaRepositoryABC extends ContakDB {
   // protected abstract deleteOne(id_nota: Nota['id_nota']): Promise<void>;
   // protected abstract updateOne(nota: Required<Nota>): Promise<Nota>;
 }
+
 export abstract class ArtigoRepositoryABC extends ContakDB {
   protected abstract getOne(id_artigo: Artigo['id_artigo']): Promise<Artigo>;
-  protected abstract insertOne(artigo: Artigo): Promise<Artigo>;
-  protected abstract getAllFromOneUsuario(): Promise<Artigo[]>;
+  // protected abstract getAllByUsuario(
+  //   id_usuario: Usuario['id_usuario'],
+  // ): Promise<Artigo[]>;
+  protected abstract saveOneArtigo(artigo: ArtigoDto): Promise<Artigo>;
+  // protected abstract getOneByProp(): Promise<Artigo>;
+  // protected abstract updateOne(): Promise<Artigo>;
+  /* ^^^^^ artigo ^^^^^^ */
+  // protected abstract saveOneNota(): Promise<Artigo>;
+  // protected abstract getOneNota(
+  //   id_artigo: NotaDeArtigo['id_notaDeArtigo'],
+  // ): Promise<Artigo>;
+  /* ^^^^^ Nota de artigo ^^^^^^ */
 
-  // protected abstract getAllByOneUsuario(
-  //   id_usuario: Nota['id_usuario'],
-  // ): Promise<NotaForInput[]>;
-  // protected abstract getOneByProp(nota: Partial<Nota>): Promise<Nota>;
-  // protected abstract insertOne(nota: requiredNotaInfo): Promise<Nota>;
-  // protected abstract insertOneIntoContagemArray(
-  //   contagem: ReqContagem[],
-  // ): Promise<void>;
-
-  // protected abstract insertOneIntoNotaDeContagem(
-  //   notaDeContagem: ReqNotaDeContagem,
-  // ): Promise<NotaDeContagem>;
-
-  // protected abstract updateOne(nota: Required<Nota>): Promise<Nota>;
+  // protected abstract deleteOne(id_usuario: number): Promise<void>;
 }

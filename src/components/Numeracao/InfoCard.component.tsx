@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ToastAndroid} from 'react-native';
+import {View, StyleSheet, ToastAndroid, Alert} from 'react-native';
 import {TextInput, Button, Text, useTheme} from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/store.hook';
@@ -73,7 +73,6 @@ const InfoCard: React.FC = (): React.JSX.Element => {
     setShowDatePicker(false);
     setData(currentDate);
   };
-
   return (
     <View style={styles.card}>
       <View style={styles.labelValueContainer}>

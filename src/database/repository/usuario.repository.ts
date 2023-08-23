@@ -49,7 +49,7 @@ export class UsuarioRepository extends UsuarioRepositoryABC {
           await this.knex
             .insert({
               ...usuario,
-              datacad: Date.now(),
+              datacad: new Date().toISOString(),
             })
             .into('usuario')
         )[0];

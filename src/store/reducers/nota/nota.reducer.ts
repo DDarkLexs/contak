@@ -14,6 +14,7 @@ interface NotaSlice {
   loading: boolean;
   clean: boolean;
   registro: QueryContagem[];
+  viewNotasDialog: boolean;
 }
 
 const initialState: NotaSlice = {
@@ -22,6 +23,7 @@ const initialState: NotaSlice = {
   clean: false,
   contagens: [],
   registro: [],
+  viewNotasDialog: true,
 };
 
 const notaSlice = createSlice({
@@ -30,6 +32,9 @@ const notaSlice = createSlice({
   reducers: {
     setRegistro: (state, action: PayloadAction<QueryContagem[]>) => {
       state.registro = action.payload;
+    },
+    setViewNotasDialog: (state, action: PayloadAction<boolean>) => {
+      state.viewNotasDialog = action.payload;
     },
     setClean: (state, action: PayloadAction<boolean>) => {
       state.clean = action.payload;
